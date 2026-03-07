@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ACEest Fitness Management</title>
+    <style>
+        body { background-color: #1a1a1a; color: white; font-family: Arial; padding: 20px; }
+        .header { color: #d4af37; text-align: center; border-bottom: 2px solid #d4af37; }
+        .container { display: flex; gap: 20px; margin-top: 20px; }
+        .panel { border: 1px solid #d4af37; padding: 15px; flex: 1; }
+        input, select { display: block; margin: 10px 0; width: 100%; padding: 5px; }
+        button { background: #d4af37; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header"><h1>ACEest Functional Fitness System</h1></div>
+    <div class="container">
+        <div class="panel">
+            <h3>Client Management</h3>
+            <input type="text" id="name" placeholder="Client Name">
+            <input type="number" id="weight" placeholder="Weight (kg)">
+            <select id="program">
+                <option value="Fat Loss (FL)">Fat Loss (FL)</option>
+                <option value="Muscle Gain (MG)">Muscle Gain (MG)</option>
+                <option value="Beginner (BG)">Beginner (BG)</option>
+            </select>
+            <button onclick="calculate()">Calculate Calories</button>
+        </div>
+        <div class="panel">
+            <h3>Client Summary</h3>
+            <div id="result">Results will appear here...</div>
+        </div>
+    </div>
+
+    <script>
+        async function calculate() {
+            const data = {
+                name: document.getElementById('name').value,
+                weight: parseFloat(document.getElementById('weight').value),
+                program: document.getElementById('program').value
+            };
+            const response = await fetch('/calculate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            document.getElementById('result').innerText = 
+                `Client: ${data.name}\nProgram: ${data.program}\nSuggested: ${result.calories} kcal/day`;
+        }
+    </script>
+</body>
+</html>
