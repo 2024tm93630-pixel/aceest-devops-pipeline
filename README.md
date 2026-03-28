@@ -123,23 +123,45 @@ Quick checks:
 curl -i http://127.0.0.1:5000/
 ```
 
-## Continuous Integration (GitHub Actions)
+## Branching Strategy
 
-The workflow file `.github/workflows/main.yml` (included in this repo) performs:
+This project follows a simplified GitFlow branching strategy:
 
-1. Checkout repository  
-2. Verify presence of `Dockerfile` and `requirements.txt`  
-3. Build the Docker image using Buildx (with caching)  
-4. Run tests inside the container (Pytest)  
+- **main** → Production-ready code  
+- **develop** → Integration branch for features  
+- **feature/** → Individual feature development  
 
+Workflow:
 
-## Jenkins Build Integration
+1. Feature branches are created from `develop`
+2. Changes are merged via Pull Requests into `develop`
+3. After testing, `develop` is merged into `main`
 
-Jenkins is configured as a Freestyle project that pulls the GitHub repository and performs a clean build.
+The CI pipeline runs on both `main` and `develop` branches, and also validates Pull Requests before merging.
 
-Steps executed by Jenkins:
-1. Install dependencies from requirements.txt
-2. Execute Pytest unit tests
-3. Build Docker container
+## CI/CD Pipeline
 
-This ensures the code compiles and integrates successfully in a controlled build environment.
+The pipeline is implemented using GitHub Actions and Jenkins.
+
+### GitHub Actions (CI)
+
+Triggered on:
+- Push to `main` and `develop`
+- Pull Requests
+
+Steps:
+1. Checkout code
+2. Install dependencies
+3. Run Pytest
+4. Build Docker image
+
+### Jenkins (Build & Quality Gate)
+
+Jenkins is deployed on a Linux VM and performs:
+
+1. Pull latest code from GitHub
+2. Install dependencies
+3. Run tests
+4. Build Docker image
+
+This acts as a secondary validation layer to ensure build stability.
