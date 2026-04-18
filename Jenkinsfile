@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build Image') {
             steps {
-                sh 'sudo podman build -t aceest-app .'
+                sh 'podman build --cgroup-manager=cgroupfs -t aceest-app .'
             }
         }
     }
