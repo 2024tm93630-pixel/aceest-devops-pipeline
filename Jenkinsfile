@@ -19,15 +19,22 @@ pipeline {
             steps {
                 sh 'podman build --cgroup-manager=cgroupfs -t aceest-app .'
             }
-        }
+        }    
 
         stage('Push Image') {
             steps {
-                sh '''
-                podman tag aceest-app docker.io/aadhyasujani/aceest-app:latest
-                podman push docker.io/aadhyasujani/aceest-app:latest
-                '''
-    }
-}
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                    echo "$DOCKER_PASS" | podman login docker.io -u "$DOCKER_USER" --password-stdin
+                    podman tag aceest-app docker.io/$DOCKER_USER/aceest-app:latest
+                    podman push docker.io/$DOCKER_USER/aceest-app:latest
+                    '''
+                }
+            }
+        }
     }
 }
