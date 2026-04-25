@@ -15,6 +15,19 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+    steps {
+        sh '''
+        /home/cloud/sonar-scanner/bin/sonar-scanner \
+        -Dsonar.projectKey=aceest-app \
+        -Dsonar.sources=. \
+        -Dsonar.host.url=http://localhost:9000 \
+        -Dsonar.login=YOUR_TOKEN \
+        -Dsonar.branch.name=develop
+        '''
+            }
+        }
+
         stage('Build Image') {
             steps {
                 sh 'podman build --cgroup-manager=cgroupfs -t aceest-app .'
