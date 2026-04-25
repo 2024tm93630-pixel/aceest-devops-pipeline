@@ -22,7 +22,7 @@ pipeline {
                 -Dsonar.projectKey=aceest-app \
                 -Dsonar.sources=. \
                 -Dsonar.host.url=http://localhost:9000 \
-                -Dsonar.login=sqa_c21307636aa58d9c37e195dbfd663059619ddfc2 \
+                -Dsonar.login=squ_ce1f61cf60e3323109e547d91eff9e92ab87cbed \
                 '''
             }
         }
