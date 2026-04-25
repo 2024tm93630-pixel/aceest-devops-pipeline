@@ -24,7 +24,7 @@ pipeline {
         -Dsonar.host.url=http://localhost:9000 \
         -Dsonar.login=sqp_2f6f1deaee1d8b319e5c92fc3d3189b655611edc \
         '''
-            }
+          }
         }
 
         stage('Build Image') {
