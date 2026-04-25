@@ -14,15 +14,18 @@ pipeline {
                 sh 'pytest'
             }
         }
-
+       
         stage('SonarQube Analysis') {
+            environment {
+                SONAR_TOKEN = 'squ_ce1f61cf60e3323109e547d91eff9e92ab87cbed'
+            }
             steps {
                 sh '''
-                /opt/sonar-scanner/bin/sonar-scanner
+                /opt/sonar-scanner/bin/sonar-scanner \
                 -Dsonar.projectKey=aceest-app \
-                -Dsonar.sources=. \
+                -Dsonar.sources=app.py \
                 -Dsonar.host.url=http://localhost:9000 \
-                -Dsonar.login=squ_ce1f61cf60e3323109e547d91eff9e92ab87cbed \
+                -Dsonar.login=$SONAR_TOKEN
                 '''
             }
         }
